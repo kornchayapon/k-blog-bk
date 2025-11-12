@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   RequestTimeoutException,
@@ -18,21 +19,12 @@ export class UsersService {
 
   // Create User
   public async createUser(createUserDto: CreateUserDto) {
-    let user = this.usersRepository.create(createUserDto);
-
-    try {
-      user = await this.usersRepository.save(user);
-    } catch (error) {
-      console.log(error);
-      throw new RequestTimeoutException(
-        'Unable to process your request at the moment please try later',
-        {
-          description: 'Error connection to database',
-        },
-      );
+    let user = await this.findOneByEmail(createUserDto.email);
+    if (user) {
+      throw new BadRequestException('Email already use !!!');
     }
-
-    return user;
+    user = this.usersRepository.create(createUserDto);
+    return await this.usersRepository.save(user);
   }
 
   // Find all users
@@ -89,7 +81,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return await this.usersRepository.delete(user);
+    return await this.usersRepository.delete(id);
   }
 
   // Soft delete user
@@ -100,6 +92,16 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return await this.usersRepository.softDelete(id);
+    await this.usersRepository.softDelete(id);
+
+    return {
+      softDelete: true,
+      id,
+    };
+  }
+
+  // Restore user
+  public async restore(id: number) {
+    return await this.usersRepository.restore(id);
   }
 }
