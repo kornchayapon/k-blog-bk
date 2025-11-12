@@ -56,7 +56,7 @@ export class User {
 
   @Column({
     type: 'int',
-    default: 1,
+    default: 0, // 0 - member, 1 - admin, 2 - staff
   })
   role: number;
 
