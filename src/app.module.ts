@@ -11,6 +11,11 @@ import environmentValidation from './config/environment.validation';
 
 // Database
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostsModule } from './posts/posts.module';
+import { PostTypesModule } from './post-types/post-types.module';
+import { PicturesModule } from './pictures/pictures.module';
+import { CategoriesModule } from './categories/categories.module';
+import { TagsModule } from './tags/tags.module';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -38,6 +43,11 @@ const ENV = process.env.NODE_ENV;
       }),
     }),
     UsersModule,
+    PostsModule,
+    PostTypesModule,
+    PicturesModule,
+    CategoriesModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
