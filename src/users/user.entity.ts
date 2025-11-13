@@ -1,3 +1,4 @@
+import { Post } from '@/posts/post.entity';
 import {
   Column,
   CreateDateColumn,
@@ -92,4 +93,7 @@ export class User {
   // ✅ user list created by this user
   @OneToMany(() => User, (user) => user.author)
   createdUsers: User[];
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
 }
