@@ -16,7 +16,7 @@ export class Tag {
 
   @Column({
     type: 'varchar',
-    length: 256,
+    length: 128,
     nullable: false,
     unique: true,
   })
@@ -24,7 +24,7 @@ export class Tag {
 
   @Column({
     type: 'varchar',
-    length: 512,
+    length: 128,
     nullable: false,
     unique: true,
   })

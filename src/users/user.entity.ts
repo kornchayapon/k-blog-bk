@@ -17,21 +17,21 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: '100',
+    length: '128',
     nullable: false,
   })
   firstName: string;
 
   @Column({
     type: 'varchar',
-    length: '100',
+    length: '128',
     nullable: false,
   })
   lastName: string;
 
   @Column({
     type: 'varchar',
-    length: '100',
+    length: '128',
     nullable: false,
     unique: true,
   })
@@ -39,7 +39,7 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: '100',
+    length: '128',
     nullable: false,
   })
   password: string;
