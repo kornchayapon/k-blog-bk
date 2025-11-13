@@ -21,7 +21,7 @@ export class UsersService {
   public async createUser(createUserDto: CreateUserDto) {
     let user = await this.findOneByEmail(createUserDto.email);
     if (user) {
-      throw new BadRequestException('Email already use !!!');
+      throw new BadRequestException('Email already in use !!!');
     }
     user = this.usersRepository.create(createUserDto);
     return await this.usersRepository.save(user);
@@ -92,12 +92,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    await this.usersRepository.softDelete(id);
-
-    return {
-      softDelete: true,
-      id,
-    };
+    return await this.usersRepository.softDelete(id);
   }
 
   // Restore user

@@ -1,0 +1,33 @@
+// Post to create post-type
+POST http://localhost:3000/post-types
+Content-Type: application/json
+
+{
+  "name": "Service",
+  "slug": "service"
+}
+
+// Get all post-types
+GET http://localhost:3000/post-types
+
+// Get post-type by id
+GET http://localhost:3000/post-types/2
+
+// Update user
+PATCH http://localhost:3000/post-types
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Product",
+  "slug": "product"
+}
+
+// Soft delete user
+DELETE http://localhost:3000/post-types?id=2
+
+// Permanent delete post type
+POST http://localhost:3000/post-types/delete?id=2
+
+// Restore user
+POST http://localhost:3000/post-types/restore?id=2
