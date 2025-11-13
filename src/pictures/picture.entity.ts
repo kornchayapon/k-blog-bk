@@ -44,19 +44,15 @@ export class Picture {
   updateDate: Date;
 
   // post
-  @OneToOne(() => Post, (post) => post.thumbnail, {
-    nullable: true,
-  })
+  @OneToOne(() => Post, (post) => post.thumbnail)
   @JoinColumn()
-  post: Post;
+  post?: Post;
 
   @ManyToMany(() => Post, (post) => post.pictures, { onDelete: 'CASCADE' })
   posts: Post[];
 
   // category
-  @OneToOne(() => Category, (category) => category.thumbnail, {
-    nullable: true,
-  })
+  @OneToOne(() => Category, (category) => category.thumbnail)
   @JoinColumn()
-  category: Category;
+  category?: Category;
 }

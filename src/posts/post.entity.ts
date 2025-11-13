@@ -74,11 +74,13 @@ export class Post {
 
   @OneToOne(() => Picture, (picture) => picture.post, {
     eager: true,
+    nullable: true,
   })
   thumbnail?: Picture;
 
   @ManyToMany(() => Picture, (picture) => picture.posts, {
     eager: true,
+    nullable: true,
   })
   @JoinTable()
   pictures?: Picture[];
@@ -90,6 +92,7 @@ export class Post {
 
   @ManyToMany(() => Tag, (tag) => tag.posts, {
     eager: true,
+    nullable: true,
   })
   @JoinTable()
   tags?: Tag[];
