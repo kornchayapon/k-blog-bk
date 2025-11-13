@@ -49,8 +49,9 @@ export class Category {
 
   @OneToOne(() => Picture, (picture) => picture.category, {
     eager: true,
+    nullable: true,
   })
-  thumbnail: string;
+  thumbnail?: string;
 
   @OneToMany(() => Post, (post) => post.category)
   posts: Post[];
