@@ -90,7 +90,7 @@ export class PostTypesService {
     const postType = await this.postTypesRepository.findOneBy({ id });
 
     if (!postType) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Post type not found');
     }
 
     return await this.postTypesRepository.delete(id);
