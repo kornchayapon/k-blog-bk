@@ -1,5 +1,3 @@
-import { Picture } from '@/pictures/picture.entity';
-import { Post } from '@/posts/post.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,6 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Post } from '@/posts/post.entity';
+import { Picture } from '@/pictures/picture.entity';
 
 @Entity()
 export class Category {

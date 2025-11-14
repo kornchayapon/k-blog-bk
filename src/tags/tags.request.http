@@ -1,0 +1,34 @@
+// Post to create tag
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "xxx",
+  "slug": "xxx"
+}
+
+// Get all tags
+GET http://localhost:3000/tags
+
+// Get tag by id
+GET http://localhost:3000/tags/1
+
+// Update tag
+PATCH http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "id": 1,
+  "description": "React software development"
+}
+
+// Soft delete tag
+DELETE http://localhost:3000/tags?id=2
+
+// Permanent delete tag
+POST http://localhost:3000/tags/delete?id=4
+
+// Restore tag
+POST http://localhost:3000/tags/restore?id=2
+
+

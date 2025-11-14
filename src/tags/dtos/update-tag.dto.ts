@@ -1,9 +1,9 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
-import { CreatePostTypeDto } from './create-post-type.dto';
+import { CreateTagDto } from './create-tag.dto';
 
-export class UpdatePostTypeDto extends PartialType(CreatePostTypeDto) {
+export class UpdateTagDto extends PartialType(CreateTagDto) {
   @IsInt()
   @IsNotEmpty()
   id: number;
