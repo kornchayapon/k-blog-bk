@@ -9,7 +9,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+
 import { CategoriesService } from './providers/categories.service';
+
 import { CreateCategoryDto } from './dtos/create-category.dto';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
 

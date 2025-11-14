@@ -1,4 +1,3 @@
-import { Post } from '@/posts/post.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -7,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Post } from '@/posts/post.entity';
 
 @Entity()
 export class PostType {

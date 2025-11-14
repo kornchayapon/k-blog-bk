@@ -5,8 +5,10 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PostType } from '../post-type.entity';
 import { Repository } from 'typeorm';
+
+import { PostType } from '../post-type.entity';
+
 import { CreatePostTypeDto } from '../dtos/create-post-type.dto';
 import { UpdatePostTypeDto } from '../dtos/update-post-type.dto';
 
@@ -76,7 +78,7 @@ export class PostTypesService {
 
   // Soft delete PostType
   public async softDelete(id: number) {
-    const postType = await this.postTypesRepository.findOneBy({ id });
+    const postType = await this.findOneById(id);
 
     if (!postType) {
       throw new NotFoundException('Post type not found');
@@ -87,7 +89,7 @@ export class PostTypesService {
 
   // Delete PostType
   public async delete(id: number) {
-    const postType = await this.postTypesRepository.findOneBy({ id });
+    const postType = await this.findOneById(id);
 
     if (!postType) {
       throw new NotFoundException('Post type not found');

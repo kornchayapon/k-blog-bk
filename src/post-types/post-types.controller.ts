@@ -9,7 +9,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+
 import { PostTypesService } from './providers/post-types.service';
+
 import { CreatePostTypeDto } from './dtos/create-post-type.dto';
 import { UpdatePostTypeDto } from './dtos/update-post-type.dto';
 

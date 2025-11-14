@@ -5,8 +5,10 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from '../category.entity';
 import { Repository } from 'typeorm';
+
+import { Category } from '../category.entity';
+
 import { UpdateCategoryDto } from '../dtos/update-category.dto';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 
@@ -20,6 +22,7 @@ export class CategoriesService {
   // Create Category
   public async createCategory(createCategoryDto: CreateCategoryDto) {
     let category = await this.findOneBySlug(createCategoryDto.slug);
+
     if (category) {
       throw new BadRequestException('Slug already in use');
     }
@@ -28,7 +31,7 @@ export class CategoriesService {
     return await this.categoriesRepository.save(category);
   }
 
-  // Find all Category
+  // Find all Categories
   public async findAll() {
     let categories: Category[];
 
@@ -66,7 +69,7 @@ export class CategoriesService {
     });
 
     if (!category) {
-      throw new NotFoundException('Post type not found');
+      throw new NotFoundException('Category not found');
     }
 
     Object.assign(category, updateCategoryDto);
@@ -76,7 +79,7 @@ export class CategoriesService {
 
   // Soft delete Category
   public async softDelete(id: number) {
-    const category = await this.categoriesRepository.findOneBy({ id });
+    const category = await this.findOneById(id);
 
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -87,7 +90,7 @@ export class CategoriesService {
 
   // Delete Category
   public async delete(id: number) {
-    const category = await this.categoriesRepository.findOneBy({ id });
+    const category = await this.findOneById(id);
 
     if (!category) {
       throw new NotFoundException('Category not found');

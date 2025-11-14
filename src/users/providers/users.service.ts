@@ -5,8 +5,9 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../user.entity';
 import { Repository } from 'typeorm';
+
+import { User } from '../user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
@@ -75,7 +76,7 @@ export class UsersService {
 
   // Delete user
   public async delete(id: number) {
-    const user = await this.usersRepository.findOneBy({ id });
+    const user = await this.findOneById(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -86,7 +87,7 @@ export class UsersService {
 
   // Soft delete user
   public async softDelete(id: number) {
-    const user = await this.usersRepository.findOneBy({ id });
+    const user = await this.findOneById(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
