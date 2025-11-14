@@ -1,0 +1,32 @@
+// Post to create category
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "name": "AI Application",
+  "slug": "AI-app"
+}
+
+// Get all categories
+GET http://localhost:3000/categories
+
+// Get category by id
+GET http://localhost:3000/categories/2
+
+// Update category
+PATCH http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Mobile App"
+}
+
+// Soft delete category
+DELETE http://localhost:3000/categories?id=2
+
+// Permanent delete category
+POST http://localhost:3000/categories/delete?id=2
+
+// Restore category
+POST http://localhost:3000/categories/restore?id=2
