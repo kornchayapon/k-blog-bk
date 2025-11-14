@@ -19,6 +19,7 @@ import { PostTypesModule } from './post-types/post-types.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TagsModule } from './tags/tags.module';
+import cloudinaryConfig from './config/cloudinary.config';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -28,7 +29,7 @@ const ENV = process.env.NODE_ENV;
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-      load: [appConfig, databaseConfig],
+      load: [appConfig, databaseConfig, cloudinaryConfig],
       validationSchema: environmentValidation,
     }),
     TypeOrmModule.forRootAsync({
