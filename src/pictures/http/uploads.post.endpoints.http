@@ -1,0 +1,22 @@
+### อัปโหลดไฟล์ภาพ 3 ไฟล์ ไปยัง NestJS Endpoint
+# POST {{baseURL}}/pictures/upload-multiple
+
+POST http://localhost:3000/pictures/upload-multiple HTTP/1.1
+Content-Type: multipart/form-data; boundary=boundary_for_multiple_files
+
+--boundary_for_multiple_files
+Content-Disposition: form-data; name="files"; filename="test1.jpg"
+
+< ./test1.jpg
+
+--boundary_for_multiple_files
+Content-Disposition: form-data; name="files"; filename="test2.jpg"
+
+< ./test2.jpg
+
+--boundary_for_multiple_files
+Content-Disposition: form-data; name="files"; filename="test3.jpg"
+
+< ./test3.jpg
+
+--boundary_for_multiple_files--
