@@ -39,7 +39,7 @@ export class CloudinaryProvider {
 
       // อัปโหลดไปยัง Cloudinary โดยกำหนด Public ID
       const uploadResult = await cloudinary.v2.uploader.upload(dataURI, {
-        folder: 'nestjs-uploads',
+        folder: 'k-blog-pictures',
         resource_type: 'auto',
         // *** กำหนด Public ID ที่สร้างขึ้นมา เพื่อให้มั่นใจว่าไม่ซ้ำ ***
         public_id: uniquePublicId,

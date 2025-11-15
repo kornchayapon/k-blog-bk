@@ -52,13 +52,17 @@ export class CategoriesService {
 
   // Find Category by Id
   public async findOneById(id: number) {
-    if (!id) return null;
+    if (!id) {
+      throw new NotFoundException(`Category with id ${id} not found`);
+    }
     return await this.categoriesRepository.findOneBy({ id });
   }
 
   // Find Category by slug
   public async findOneBySlug(slug: string) {
-    if (!slug) return null;
+    if (!slug) {
+      throw new NotFoundException(`Category with slug ${slug} not found`);
+    }
     return await this.categoriesRepository.findOneBy({ slug });
   }
 
