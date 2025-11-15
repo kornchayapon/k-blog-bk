@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { CloudinaryProvider } from './cloudinary.provider';
 import { Picture } from '../picture.entity';
@@ -16,6 +16,7 @@ export class PicturesService {
     private cloudinaryProvider: CloudinaryProvider,
   ) {}
 
+  // Upload multiple pictures
   public async uploadMultiplePictures(
     files: Express.Multer.File[],
   ): Promise<Picture[]> {
@@ -53,5 +54,28 @@ export class PicturesService {
         'An error occurred during file upload and database saving.',
       );
     }
+  }
+
+  // Find Picture by Id
+  public async findOneById(id?: number) {
+    if (!id) return undefined;
+    const picture = await this.picturesRepository.findOneBy({ id });
+
+    return picture ?? undefined;
+  }
+
+  // Find multiple Pictures
+  public async findMultiPictures(pictures?: number[]) {
+    if (!pictures?.length) {
+      return [];
+    }
+
+    const results = await this.picturesRepository.find({
+      where: {
+        id: In(pictures),
+      },
+    });
+
+    return results;
   }
 }

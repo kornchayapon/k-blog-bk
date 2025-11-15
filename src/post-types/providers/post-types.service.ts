@@ -51,13 +51,17 @@ export class PostTypesService {
 
   // Find PostType by Id
   public async findOneById(id: number) {
-    if (!id) return null;
+    if (!id) {
+      throw new NotFoundException(`Post type with id ${id} not found`);
+    }
     return await this.postTypesRepository.findOneBy({ id });
   }
 
   // Find PostType by slug
   public async findOneBySlug(slug: string) {
-    if (!slug) return null;
+    if (!slug) {
+      throw new NotFoundException(`Post type with slug ${slug} not found`);
+    }
     return await this.postTypesRepository.findOneBy({ slug });
   }
 

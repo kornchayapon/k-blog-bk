@@ -49,13 +49,17 @@ export class UsersService {
 
   // Find user by ID
   public async findOneById(id: number) {
-    if (!id) return null;
+    if (!id) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
     return await this.usersRepository.findOneBy({ id });
   }
 
   // Find one user by email
   public async findOneByEmail(email: string) {
-    if (!email) return null;
+    if (!email) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
     return await this.usersRepository.findOneBy({ email });
   }
 

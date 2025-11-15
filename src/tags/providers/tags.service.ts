@@ -51,14 +51,18 @@ export class TagsService {
 
   // Find Tag by Id
   public async findOneById(id: number) {
-    if (!id) return null;
-    return await this.tagsRepository.findOneBy({ id });
+    if (!id) return undefined;
+
+    const tag = await this.tagsRepository.findOneBy({ id });
+    return tag ?? undefined;
   }
 
   // Find Tag by slug
   public async findOneBySlug(slug: string) {
-    if (!slug) return null;
-    return await this.tagsRepository.findOneBy({ slug });
+    if (!slug) return undefined;
+
+    const tag = await this.tagsRepository.findOneBy({ slug });
+    return tag ?? undefined;
   }
 
   // Find multiple Tags (service function)

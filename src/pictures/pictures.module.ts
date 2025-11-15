@@ -15,5 +15,6 @@ import { CloudinaryProvider } from './providers/cloudinary.provider';
     TypeOrmModule.forFeature([Picture]),
     ConfigModule.forFeature(cloudinaryConfig),
   ],
+  exports: [PicturesService],
 })
 export class PicturesModule {}
