@@ -3,8 +3,8 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "xxx",
-  "slug": "xxx"
+  "name": "nodejs",
+  "slug": "nodejs"
 }
 
 // Get all tags
