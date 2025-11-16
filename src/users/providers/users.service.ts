@@ -19,7 +19,7 @@ export class UsersService {
   ) {}
 
   // Create User
-  public async createUser(createUserDto: CreateUserDto) {
+  public async create(createUserDto: CreateUserDto) {
     let user = await this.findOneByEmail(createUserDto.email);
     if (user) {
       throw new BadRequestException('Email already in use !!!');

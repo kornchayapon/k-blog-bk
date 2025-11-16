@@ -25,8 +25,7 @@ export class PicturesController {
     }
 
     // เรียกใช้ Service เพื่อจัดการการอัปโหลดและบันทึก DB
-    const uploadedPictures =
-      await this.picturesService.uploadMultiplePictures(files);
+    const uploadedPictures = await this.picturesService.uploadMultiple(files);
 
     return uploadedPictures;
   }

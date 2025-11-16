@@ -19,27 +19,27 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  public async createUser(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createUser(createUserDto);
+  public async create(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
   }
 
   @Get()
-  public async getAllUsers() {
+  public async getAll() {
     return await this.usersService.findAll();
   }
 
   @Get('/:id')
-  public async getUser(@Param('id', ParseIntPipe) id: number) {
+  public async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.findOneById(id);
   }
 
   @Patch()
-  public async updateUser(@Body() updateUserDto: UpdateUserDto) {
+  public async update(@Body() updateUserDto: UpdateUserDto) {
     return await this.usersService.update(updateUserDto);
   }
 
   @Delete()
-  public async softDeleteUser(@Query('id', ParseIntPipe) id: number) {
+  public async softDelete(@Query('id', ParseIntPipe) id: number) {
     await this.usersService.softDelete(id);
 
     return {
@@ -49,7 +49,7 @@ export class UsersController {
   }
 
   @Post('delete')
-  public async deleteUser(@Query('id', ParseIntPipe) id: number) {
+  public async delete(@Query('id', ParseIntPipe) id: number) {
     await this.usersService.delete(id);
 
     return {
@@ -59,7 +59,7 @@ export class UsersController {
   }
 
   @Post('restore')
-  public async restoreUser(@Query('id', ParseIntPipe) id: number) {
+  public async restore(@Query('id', ParseIntPipe) id: number) {
     await this.usersService.restore(id);
 
     return {

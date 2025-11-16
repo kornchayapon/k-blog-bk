@@ -19,27 +19,27 @@ export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
   @Post()
-  public async createTag(@Body() createTagDto: CreateTagDto) {
-    return await this.tagsService.createTag(createTagDto);
+  public async create(@Body() createTagDto: CreateTagDto) {
+    return await this.tagsService.create(createTagDto);
   }
 
   @Get()
-  public async getAllTags() {
+  public async getAll() {
     return await this.tagsService.findAll();
   }
 
   @Get('/:id')
-  public async getTag(@Param('id', ParseIntPipe) id: number) {
+  public async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.tagsService.findOneById(id);
   }
 
   @Patch()
-  public async updateTag(@Body() updateTagDto: UpdateTagDto) {
+  public async update(@Body() updateTagDto: UpdateTagDto) {
     return await this.tagsService.update(updateTagDto);
   }
 
   @Delete()
-  public async softDeleteTag(@Query('id', ParseIntPipe) id: number) {
+  public async softDelete(@Query('id', ParseIntPipe) id: number) {
     await this.tagsService.softDelete(id);
 
     return {
@@ -49,7 +49,7 @@ export class TagsController {
   }
 
   @Post('delete')
-  public async deleteTag(@Query('id', ParseIntPipe) id: number) {
+  public async delete(@Query('id', ParseIntPipe) id: number) {
     await this.tagsService.delete(id);
 
     return {
@@ -59,7 +59,7 @@ export class TagsController {
   }
 
   @Post('restore')
-  public async restoreTag(@Query('id', ParseIntPipe) id: number) {
+  public async restore(@Query('id', ParseIntPipe) id: number) {
     await this.tagsService.restore(id);
 
     return {

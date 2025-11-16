@@ -20,7 +20,7 @@ export class CategoriesService {
   ) {}
 
   // Create Category
-  public async createCategory(createCategoryDto: CreateCategoryDto) {
+  public async create(createCategoryDto: CreateCategoryDto) {
     let category = await this.findOneBySlug(createCategoryDto.slug);
 
     if (category) {

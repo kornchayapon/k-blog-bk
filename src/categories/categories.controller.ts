@@ -20,27 +20,27 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  public async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return await this.categoriesService.createCategory(createCategoryDto);
+  public async create(@Body() createCategoryDto: CreateCategoryDto) {
+    return await this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
-  public async getAllCategories() {
+  public async getAll() {
     return await this.categoriesService.findAll();
   }
 
   @Get('/:id')
-  public async getCategory(@Param('id', ParseIntPipe) id: number) {
+  public async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.categoriesService.findOneById(id);
   }
 
   @Patch()
-  public async updateCategory(@Body() updateCategoryDto: UpdateCategoryDto) {
+  public async update(@Body() updateCategoryDto: UpdateCategoryDto) {
     return await this.categoriesService.update(updateCategoryDto);
   }
 
   @Delete()
-  public async softDeleteCategory(@Query('id', ParseIntPipe) id: number) {
+  public async softDelete(@Query('id', ParseIntPipe) id: number) {
     await this.categoriesService.softDelete(id);
 
     return {
@@ -50,7 +50,7 @@ export class CategoriesController {
   }
 
   @Post('delete')
-  public async deleteCategory(@Query('id', ParseIntPipe) id: number) {
+  public async delete(@Query('id', ParseIntPipe) id: number) {
     await this.categoriesService.delete(id);
 
     return {
@@ -60,7 +60,7 @@ export class CategoriesController {
   }
 
   @Post('restore')
-  public async restoreCategory(@Query('id', ParseIntPipe) id: number) {
+  public async restore(@Query('id', ParseIntPipe) id: number) {
     await this.categoriesService.restore(id);
 
     return {
