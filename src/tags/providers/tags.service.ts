@@ -19,7 +19,7 @@ export class TagsService {
   ) {}
 
   // Create Tag
-  public async createTag(createTagDto: CreateTagDto) {
+  public async create(createTagDto: CreateTagDto) {
     let tag = await this.findOneBySlug(createTagDto.slug);
 
     if (tag) {
@@ -66,7 +66,7 @@ export class TagsService {
   }
 
   // Find multiple Tags (service function)
-  public async findMultipleTags(tags?: number[]) {
+  public async findMultiple(tags?: number[]) {
     if (!tags?.length) {
       return [];
     }

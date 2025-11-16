@@ -3,8 +3,8 @@ POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-  "name": "AI Application",
-  "slug": "AI-app"
+  "name": "Web App",
+  "slug": "web-app"
 }
 
 // Get all categories
@@ -18,8 +18,8 @@ PATCH http://localhost:3000/categories
 Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "Mobile App"
+  "id": 1,
+  "slug": "ai-app"
 }
 
 // Soft delete category

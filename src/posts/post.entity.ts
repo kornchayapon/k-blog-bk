@@ -72,13 +72,18 @@ export class Post {
   })
   postType: PostType;
 
-  @OneToOne(() => Picture, (picture) => picture.post, {
+  // @OneToOne(() => Picture, (picture) => picture.post, {
+  //   eager: true,
+  //   nullable: true,
+  // })
+  // thumbnail?: Picture;
+
+  @ManyToOne(() => Picture, (picture) => picture.thumbnailPosts, {
     eager: true,
-    nullable: true,
   })
   thumbnail?: Picture;
 
-  @ManyToMany(() => Picture, (picture) => picture.posts, {
+  @ManyToMany(() => Picture, (picture) => picture.picturePosts, {
     eager: true,
     nullable: true,
   })

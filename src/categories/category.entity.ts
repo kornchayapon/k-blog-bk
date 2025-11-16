@@ -3,8 +3,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -48,11 +48,10 @@ export class Category {
   @DeleteDateColumn()
   deletedDate: Date;
 
-  @OneToOne(() => Picture, (picture) => picture.category, {
+  @ManyToOne(() => Picture, (picture) => picture.categoryPosts, {
     eager: true,
-    nullable: true,
   })
-  thumbnail?: string;
+  thumbnail?: Picture;
 
   @OneToMany(() => Post, (post) => post.category)
   posts: Post[];

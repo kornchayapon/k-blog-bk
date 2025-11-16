@@ -20,27 +20,27 @@ export class PostTypesController {
   constructor(private readonly postTypesService: PostTypesService) {}
 
   @Post()
-  public async createPostType(@Body() createPostTypeDto: CreatePostTypeDto) {
-    return await this.postTypesService.createPostType(createPostTypeDto);
+  public async create(@Body() createPostTypeDto: CreatePostTypeDto) {
+    return await this.postTypesService.create(createPostTypeDto);
   }
 
   @Get()
-  public async getAllPostTypes() {
+  public async getAll() {
     return await this.postTypesService.findAll();
   }
 
   @Get('/:id')
-  public async getPostType(@Param('id', ParseIntPipe) id: number) {
+  public async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.postTypesService.findOneById(id);
   }
 
   @Patch()
-  public async updatePostType(@Body() updatePostTypeDto: UpdatePostTypeDto) {
+  public async update(@Body() updatePostTypeDto: UpdatePostTypeDto) {
     return await this.postTypesService.update(updatePostTypeDto);
   }
 
   @Delete()
-  public async softDeletePostType(@Query('id', ParseIntPipe) id: number) {
+  public async softDelete(@Query('id', ParseIntPipe) id: number) {
     await this.postTypesService.softDelete(id);
 
     return {
@@ -50,7 +50,7 @@ export class PostTypesController {
   }
 
   @Post('delete')
-  public async deletePostType(@Query('id', ParseIntPipe) id: number) {
+  public async delete(@Query('id', ParseIntPipe) id: number) {
     await this.postTypesService.delete(id);
 
     return {
@@ -60,7 +60,7 @@ export class PostTypesController {
   }
 
   @Post('restore')
-  public async restorePostType(@Query('id', ParseIntPipe) id: number) {
+  public async restore(@Query('id', ParseIntPipe) id: number) {
     await this.postTypesService.restore(id);
 
     return {

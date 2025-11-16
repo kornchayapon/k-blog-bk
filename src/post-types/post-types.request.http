@@ -3,8 +3,8 @@ POST http://localhost:3000/post-types
 Content-Type: application/json
 
 {
-  "name": "Service",
-  "slug": "service"
+  "name": "Product",
+  "slug": "product"
 }
 
 // Get all post-types

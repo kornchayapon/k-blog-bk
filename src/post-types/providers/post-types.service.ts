@@ -20,7 +20,7 @@ export class PostTypesService {
   ) {}
 
   // Create PostType
-  public async createPostType(createPostTypeDto: CreatePostTypeDto) {
+  public async create(createPostTypeDto: CreatePostTypeDto) {
     let postType = await this.findOneBySlug(createPostTypeDto.slug);
     if (postType) {
       throw new BadRequestException('Slug already in use');

@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -45,15 +46,16 @@ export class Picture {
   updateDate: Date;
 
   // post
-  @OneToOne(() => Post, (post) => post.thumbnail)
-  @JoinColumn()
-  post?: Post;
+  // @OneToOne(() => Post, (post) => post.thumbnail, { onDelete: 'CASCADE' })
+  // @JoinColumn()
+  // post?: Post;
+
+  @OneToMany(() => Category, (category) => category.thumbnail)
+  categoryPosts: Post[];
+
+  @OneToMany(() => Post, (post) => post.thumbnail)
+  thumbnailPosts: Post[];
 
   @ManyToMany(() => Post, (post) => post.pictures, { onDelete: 'CASCADE' })
-  posts: Post[];
-
-  // category
-  @OneToOne(() => Category, (category) => category.thumbnail)
-  @JoinColumn()
-  category?: Category;
+  picturePosts: Post[];
 }

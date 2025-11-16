@@ -3,8 +3,8 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "nodejs",
-  "slug": "nodejs"
+  "name": "Nest JS",
+  "slug": "nest-js"
 }
 
 // Get all tags

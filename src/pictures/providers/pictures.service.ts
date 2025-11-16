@@ -17,7 +17,7 @@ export class PicturesService {
   ) {}
 
   // Upload multiple pictures
-  public async uploadMultiplePictures(
+  public async uploadMultiple(
     files: Express.Multer.File[],
   ): Promise<Picture[]> {
     if (!files || files.length === 0) {
@@ -65,7 +65,7 @@ export class PicturesService {
   }
 
   // Find multiple Pictures
-  public async findMultiPictures(pictures?: number[]) {
+  public async findMultiple(pictures?: number[]) {
     if (!pictures?.length) {
       return [];
     }

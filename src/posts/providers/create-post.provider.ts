@@ -28,7 +28,7 @@ export class CreatePostProvider {
     private readonly tagsService: TagsService,
   ) {}
 
-  public async createPost(createPostDto: CreatePostDto, userId: number) {
+  public async create(createPostDto: CreatePostDto, userId: number) {
     // Find Post Type, Category, Author, Must have ...
     const postType = await this.postTypesService.findOneById(
       createPostDto.postType,
@@ -59,11 +59,11 @@ export class CreatePostProvider {
     }
 
     // Find tags, thumbnail, pictures Optional ...
-    const tags = await this.tagsService.findMultipleTags(createPostDto.tags);
+    const tags = await this.tagsService.findMultiple(createPostDto.tags);
     const thumbnail = await this.picturesService.findOneById(
       createPostDto.thumbnail,
     );
-    const pictures = await this.picturesService.findMultiPictures(
+    const pictures = await this.picturesService.findMultiple(
       createPostDto.pictures,
     );
 

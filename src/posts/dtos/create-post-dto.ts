@@ -56,6 +56,9 @@ export class CreatePostDto {
   @IsNotEmpty()
   postStatus: PostStatus;
 
+  @IsOptional()
+  publishedOn?: Date;
+
   @IsInt()
   @IsNotEmpty()
   author: number;
