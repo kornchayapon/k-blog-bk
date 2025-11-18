@@ -2,15 +2,15 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title": "What's new with NestJS 11 - 2",  
-  "slug": "nest-js-2",
+  "title": "What's new with NestJS 11 - 1",  
+  "slug": "nest-js-1",
   "postType": 3,
   "category": 1,
   "content": "Hello nestjs post",
   "postStatus": "draft",
   "publishedOn": "2025-11-07T11:12:06.642Z",
-  "thumbnail": 1,
-  "pictures": [1, 2],
+  "thumbnail": 4,
+  "pictures": [5, 6],
   "tags": [1, 3],
   "author": 1
 }
@@ -26,7 +26,7 @@ PATCH http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "id": 2,
+  "id": 3,
   "title": "What's new with NestJS 11 yyy",  
   // "slug": "nest-js-1",
   // "postType": 3,
@@ -35,7 +35,7 @@ Content-Type: application/json
   // "postStatus": "draft",
   "publishedOn": "2025-11-07T11:12:06.642Z",
   "thumbnail": 2,
-  "pictures": [2],
+  "pictures": [],
   // "tags": [5, 6],
   "author": 1
 }
