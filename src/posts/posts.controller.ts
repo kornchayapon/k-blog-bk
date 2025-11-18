@@ -49,17 +49,17 @@ export class PostsController {
 
   @Post('delete')
   public async delete(@Query('id', ParseIntPipe) id: number) {
-    await this.postsService.delete(id);
+    return await this.postsService.delete(id);
 
-    return {
-      delete: true,
-      id,
-    };
+    // return {
+    //   delete: true,
+    //   id,
+    // };
   }
 
   @Post('restore')
   public async restore(@Query('id', ParseIntPipe) id: number) {
-    await this.postsService.restore(id);
+    return await this.postsService.restore(id);
 
     return {
       restore: true,

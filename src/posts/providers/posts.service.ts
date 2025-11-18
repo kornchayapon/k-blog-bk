@@ -1,5 +1,6 @@
 import {
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -10,12 +11,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdatePostDto } from '../dtos/update-post.dto';
 import { UpdatePostProvider } from './update-post.provider';
+import { PicturesService } from '@/pictures/providers/pictures.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     private readonly createPostProvider: CreatePostProvider,
     private readonly updatePostProvider: UpdatePostProvider,
+
+    private readonly picturesService: PicturesService,
 
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
@@ -65,7 +69,53 @@ export class PostsService {
       throw new NotFoundException('Post not found');
     }
 
-    return await this.postsRepository.delete(id);
+    // Get thumbnailId
+    const thumbnailId = post.thumbnail?.id;
+    if (!thumbnailId) {
+      throw new NotFoundException('No pictures found with the provided IDs.');
+    }
+
+    // Delete Thumbnail
+    try {
+      await this.picturesService.deleteOne(thumbnailId);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to delete a pictures. Total errors: ${error}`,
+      );
+    }
+
+    const pictureIds = post.pictures?.map((picture) => picture.id);
+
+    // Delete Thumbnail
+    if (pictureIds?.length) {
+      try {
+        await this.picturesService.deleteMultiple(pictureIds);
+      } catch (error) {
+        throw new InternalServerErrorException(
+          `Failed to delete all pictures. Total errors: ${error}`,
+        );
+      }
+    }
+
+    // Delete Post
+    try {
+      await this.postsRepository.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to delete all post. Total errors: ${error}`,
+      );
+    }
+
+    const result = {
+      postId: id,
+      thumbnailId,
+      pictureIds,
+      deleted: true,
+    };
+
+    return result;
+
+    // return await this.postsRepository.delete(id);
   }
 
   // Soft delete Post
