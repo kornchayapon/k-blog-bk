@@ -100,8 +100,8 @@ export class PicturesService {
     // 3. ลบไฟล์จาก Cloudinary
     // หาก Cloudinary ล้มเหลว ควรหยุดการทำงานและรายงานข้อผิดพลาด
     try {
-      const deleteResult = await this.cloudinaryProvider.deleteFile(publicId);
-      console.log(deleteResult);
+      await this.cloudinaryProvider.deleteFile(publicId);
+      // console.log(deleteResult);
 
       // เราอาจจะ log ผลลัพธ์ Cloudinary ที่นี่
     } catch (cloudinaryError) {
@@ -131,5 +131,56 @@ export class PicturesService {
         'Media file was deleted, but failed to remove picture data from database.',
       );
     }
+  }
+
+  public async deleteMultiple(
+    ids: number[],
+  ): Promise<{ deletedCount: number; errors: any[] }> {
+    const results = {
+      deletedCount: 0,
+      errors: [],
+    };
+
+    if (!ids || ids.length === 0) {
+      return results;
+    }
+
+    // 1. ค้นหา Entities ทั้งหมดจาก Database
+    // ใช้ In() เพื่อค้นหาหลาย ID พร้อมกัน
+    const pictures = await this.picturesRepository.findBy({ id: In(ids) });
+
+    if (pictures.length === 0) {
+      throw new NotFoundException('No pictures found with the provided IDs.');
+    }
+
+    // 2. ลูปและดำเนินการลบทีละไฟล์ (Cloudinary -> Database)
+    for (const picture of pictures) {
+      const publicId = picture.name;
+
+      try {
+        // A. ลบไฟล์จาก Cloudinary
+        await this.cloudinaryProvider.deleteFile(publicId);
+
+        // B. ลบข้อมูลจาก Database
+        await this.picturesRepository.delete(picture.id);
+        results.deletedCount++;
+      } catch (error) {
+        // C. จัดการข้อผิดพลาด (เช่น Cloudinary ลบไม่สำเร็จ)
+        console.error(
+          `Error deleting picture ID ${picture.id} (Public ID: ${publicId}):`,
+          error,
+        );
+      }
+    }
+
+    // 3. ตรวจสอบว่ามีข้อผิดพลาดร้ายแรงหรือไม่
+    if (results.deletedCount === 0 && results.errors.length > 0) {
+      // หากลบไม่ได้เลยสักไฟล์เดียว ให้โยน InternalServerErrorException
+      throw new InternalServerErrorException(
+        `Failed to delete all pictures. Total errors: ${results.errors.length}`,
+      );
+    }
+
+    return results;
   }
 }

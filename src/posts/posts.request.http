@@ -9,8 +9,8 @@ Content-Type: application/json
   "content": "Hello nestjs post",
   "postStatus": "draft",
   "publishedOn": "2025-11-07T11:12:06.642Z",
-  "thumbnail": 4,
-  "pictures": [5, 6],
+  "thumbnail": 10,
+  "pictures": [11, 12],
   "tags": [1, 3],
   "author": 1
 }
@@ -40,12 +40,12 @@ Content-Type: application/json
   "author": 1
 }
 
-// Soft delete user
+// Soft delete Post
 DELETE http://localhost:3000/posts?id=3
 
-// Permanent delete user
-POST http://localhost:3000/posts/delete?id=2
+// Permanent delete Post
+POST http://localhost:3000/posts/delete?id=6
 
-// Restore user
+// Restore Post
 POST http://localhost:3000/posts/restore?id=3
 
