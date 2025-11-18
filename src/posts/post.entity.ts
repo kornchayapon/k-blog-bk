@@ -6,7 +6,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -80,6 +79,7 @@ export class Post {
 
   @ManyToOne(() => Picture, (picture) => picture.thumbnailPosts, {
     eager: true,
+    onDelete: 'SET NULL',
   })
   thumbnail?: Picture;
 

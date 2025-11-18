@@ -20,3 +20,6 @@ Content-Disposition: form-data; name="files"; filename="test3.jpg"
 < ./test3.jpg
 
 --boundary_for_multiple_files--
+
+// Delete Picture
+DELETE http://localhost:3000/pictures?id=4

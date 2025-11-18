@@ -1,12 +1,16 @@
 import {
   Controller,
+  Delete,
+  ParseIntPipe,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { PicturesService } from './providers/pictures.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Picture } from './picture.entity';
+import { DeleteResult } from './interfaces/delete-result.interface';
 
 @Controller('pictures')
 export class PicturesController {
@@ -28,5 +32,12 @@ export class PicturesController {
     const uploadedPictures = await this.picturesService.uploadMultiple(files);
 
     return uploadedPictures;
+  }
+
+  @Delete()
+  public async delete(
+    @Query('id', ParseIntPipe) id: number,
+  ): Promise<DeleteResult> {
+    return await this.picturesService.deleteOne(id);
   }
 }

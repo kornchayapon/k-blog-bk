@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import cloudinaryConfig from '@/config/cloudinary.config';
 
 export type CloudinaryUploadResult = cloudinary.UploadApiResponse;
+export type CloudinaryDeleteResult = cloudinary.DeleteApiResponse;
 
 @Injectable()
 export class CloudinaryProvider {
@@ -63,5 +64,26 @@ export class CloudinaryProvider {
     const timeStamp = new Date().getTime().toString().trim();
     // 4. สร้างชื่อไฟล์ที่ไม่ซ้ำกัน
     return `${name}-${timeStamp}-${uuidv4()}`; // *ไม่ต้องใส่ extension ใน Public ID*
+  }
+
+  public async deleteFile(publicId: string): Promise<CloudinaryDeleteResult> {
+    try {
+      const result = await cloudinary.v2.uploader.destroy(publicId, {
+        resource_type: 'image', // สามารถระบุ resource_type ให้ถูกต้อง
+      });
+
+      // if (result && result.result !== 'ok' && result.result !== 'not found') {
+      //   throw new InternalServerErrorException(
+      //     `Failed to delete file on Cloudinary: ${result.result}`,
+      //   );
+      // }
+
+      return result;
+    } catch (error) {
+      console.error('Cloudinary delete error:', error);
+      throw new InternalServerErrorException(
+        'An error occurred during file deletion on Cloudinary.',
+      );
+    }
   }
 }
