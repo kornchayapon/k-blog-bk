@@ -9,20 +9,29 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+
 import { CreatePostDto } from './dtos/create-post-dto';
-import { PostsService } from './providers/posts.service';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
+
+import { PostsService } from './providers/posts.service';
+
 import { Auth } from '@/auth/decorators/auth.decorator';
+import { ActiveUser } from '@/auth/decorators/active-user.decorator';
+
 import { AuthType } from '@/auth/enums/auth-type.enum';
+import type { ActiveUserData } from '@/auth/interfaces/active-user-data.interface';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  public async create(@Body() createPostDto: CreatePostDto) {
-    return await this.postsService.create(createPostDto, createPostDto.author);
+  public async create(
+    @Body() createPostDto: CreatePostDto,
+    @ActiveUser() user: ActiveUserData,
+  ) {
+    return await this.postsService.create(createPostDto, user);
   }
 
   @Get()
@@ -37,8 +46,11 @@ export class PostsController {
   }
 
   @Patch()
-  public async update(@Body() updatePostDto: UpdatePostDto) {
-    return await this.postsService.update(updatePostDto);
+  public async update(
+    @Body() updatePostDto: UpdatePostDto,
+    @ActiveUser() user: ActiveUserData,
+  ) {
+    return await this.postsService.update(updatePostDto, user);
   }
 
   @Delete()

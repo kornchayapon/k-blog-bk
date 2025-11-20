@@ -4,15 +4,20 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Post } from '../post.entity';
+
 import { UpdatePostDto } from '../dtos/update-post.dto';
+
 import { TagsService } from '@/tags/providers/tags.service';
 import { PicturesService } from '@/pictures/providers/pictures.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from '../post.entity';
-import { Repository } from 'typeorm';
 import { PostTypesService } from '@/post-types/providers/post-types.service';
 import { CategoriesService } from '@/categories/providers/categories.service';
 import { UsersService } from '@/users/providers/users.service';
+
+import type { ActiveUserData } from '@/auth/interfaces/active-user-data.interface';
 
 @Injectable()
 export class UpdatePostProvider {
@@ -29,7 +34,7 @@ export class UpdatePostProvider {
     private readonly usersService: UsersService,
   ) {}
 
-  public async update(updatePostDto: UpdatePostDto) {
+  public async update(updatePostDto: UpdatePostDto, user: ActiveUserData) {
     // Find tags, thumbnail, pictures Optional ...
     const tags = await this.tagsService.findMultiple(updatePostDto.tags);
     const thumbnail = await this.picturesService.findOneById(
@@ -79,12 +84,10 @@ export class UpdatePostProvider {
     post.pictures = pictures;
     post.tags = tags;
 
-    if (updatePostDto.author) {
-      const author = await this.usersService.findOneById(updatePostDto.author);
+    if (user) {
+      const author = await this.usersService.findOneById(user.sub);
       if (!author) {
-        throw new NotFoundException(
-          `User with id ${updatePostDto.author} not found`,
-        );
+        throw new NotFoundException(`User with id ${user.sub} not found`);
       }
 
       post.author = author;
