@@ -1,4 +1,3 @@
-import { UsersService } from '@/users/providers/users.service';
 import {
   ConflictException,
   Injectable,
@@ -6,12 +5,18 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { Post } from '../post.entity';
+
+import { UsersService } from '@/users/providers/users.service';
 import { TagsService } from '@/tags/providers/tags.service';
-import { CreatePostDto } from '../dtos/create-post-dto';
 import { PostTypesService } from '@/post-types/providers/post-types.service';
 import { CategoriesService } from '@/categories/providers/categories.service';
 import { PicturesService } from '@/pictures/providers/pictures.service';
+
+import { CreatePostDto } from '../dtos/create-post-dto';
+
+import type { ActiveUserData } from '@/auth/interfaces/active-user-data.interface';
 
 @Injectable()
 export class CreatePostProvider {
@@ -28,7 +33,7 @@ export class CreatePostProvider {
     private readonly tagsService: TagsService,
   ) {}
 
-  public async create(createPostDto: CreatePostDto, userId: number) {
+  public async create(createPostDto: CreatePostDto, user: ActiveUserData) {
     // Find Post Type, Category, Author, Must have ...
     const postType = await this.postTypesService.findOneById(
       createPostDto.postType,
@@ -52,10 +57,10 @@ export class CreatePostProvider {
     }
 
     // Find Author
-    const author = await this.usersService.findOneById(userId);
+    const author = await this.usersService.findOneById(user.sub);
 
     if (!author) {
-      throw new NotFoundException(`User with id ${userId} not found`);
+      throw new NotFoundException(`User with id ${user.sub} not found`);
     }
 
     // Find tags, thumbnail, pictures Optional ...

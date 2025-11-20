@@ -3,17 +3,23 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreatePostDto } from '../dtos/create-post-dto';
-import { CreatePostProvider } from './create-post.provider';
-import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+import { Post } from '../post.entity';
+
+import { CreatePostDto } from '../dtos/create-post-dto';
 import { UpdatePostDto } from '../dtos/update-post.dto';
-import { UpdatePostProvider } from './update-post.provider';
-import { PicturesService } from '@/pictures/providers/pictures.service';
-import { PaginationProvider } from '@/common/pagination/providers/pagination.provider';
 import { GetPostsDto } from '../dtos/get-posts.dto';
+
+import { CreatePostProvider } from './create-post.provider';
+import { UpdatePostProvider } from './update-post.provider';
+import { PaginationProvider } from '@/common/pagination/providers/pagination.provider';
+
+import { PicturesService } from '@/pictures/providers/pictures.service';
+
 import { Paginated } from '@/common/pagination/interfaces/paginated.interface';
+import type { ActiveUserData } from '@/auth/interfaces/active-user-data.interface';
 
 @Injectable()
 export class PostsService {
@@ -28,8 +34,8 @@ export class PostsService {
     private postsRepository: Repository<Post>,
   ) {}
 
-  public async create(createPostDto: CreatePostDto, userId: number) {
-    return await this.createPostProvider.create(createPostDto, userId);
+  public async create(createPostDto: CreatePostDto, user: ActiveUserData) {
+    return await this.createPostProvider.create(createPostDto, user);
   }
 
   // Find all Posts
@@ -57,8 +63,8 @@ export class PostsService {
   }
 
   // Update Post
-  public async update(updatePostDto: UpdatePostDto) {
-    return await this.updatePostProvider.update(updatePostDto);
+  public async update(updatePostDto: UpdatePostDto, user: ActiveUserData) {
+    return await this.updatePostProvider.update(updatePostDto, user);
   }
 
   // Delete Post

@@ -58,8 +58,4 @@ export class CreatePostDto {
 
   @IsOptional()
   publishedOn?: Date;
-
-  @IsInt()
-  @IsNotEmpty()
-  author: number;
 }
