@@ -12,6 +12,9 @@ import {
 import { CreatePostDto } from './dtos/create-post-dto';
 import { PostsService } from './providers/posts.service';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
+import { Auth } from '@/auth/decorators/auth.decorator';
+import { AuthType } from '@/auth/enums/auth-type.enum';
 
 @Controller('posts')
 export class PostsController {
@@ -23,8 +26,9 @@ export class PostsController {
   }
 
   @Get()
-  public async getAll() {
-    return await this.postsService.findAll();
+  @Auth(AuthType.None)
+  public async getAll(@Query() postQuery: GetPostsDto) {
+    return await this.postsService.findAll(postQuery);
   }
 
   @Get('/:id')

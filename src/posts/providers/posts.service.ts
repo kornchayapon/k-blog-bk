@@ -2,7 +2,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  RequestTimeoutException,
 } from '@nestjs/common';
 import { CreatePostDto } from '../dtos/create-post-dto';
 import { CreatePostProvider } from './create-post.provider';
@@ -12,12 +11,16 @@ import { Repository } from 'typeorm';
 import { UpdatePostDto } from '../dtos/update-post.dto';
 import { UpdatePostProvider } from './update-post.provider';
 import { PicturesService } from '@/pictures/providers/pictures.service';
+import { PaginationProvider } from '@/common/pagination/providers/pagination.provider';
+import { GetPostsDto } from '../dtos/get-posts.dto';
+import { Paginated } from '@/common/pagination/interfaces/paginated.interface';
 
 @Injectable()
 export class PostsService {
   constructor(
     private readonly createPostProvider: CreatePostProvider,
     private readonly updatePostProvider: UpdatePostProvider,
+    private readonly paginationProvider: PaginationProvider,
 
     private readonly picturesService: PicturesService,
 
@@ -30,20 +33,17 @@ export class PostsService {
   }
 
   // Find all Posts
-  public async findAll() {
-    let posts: Post[];
+  public async findAll(postQuery: GetPostsDto): Promise<Paginated<Post>> {
+    const limit = postQuery.limit ?? 2;
+    const page = postQuery.page ?? 1;
 
-    try {
-      posts = await this.postsRepository.find();
-    } catch (error) {
-      console.log(error);
-      throw new RequestTimeoutException(
-        'Unable to process your request at the moment please try later',
-        {
-          description: 'Error connection to database',
-        },
-      );
-    }
+    const posts = await this.paginationProvider.paginateQuery(
+      {
+        limit,
+        page,
+      },
+      this.postsRepository,
+    );
 
     return posts;
   }
