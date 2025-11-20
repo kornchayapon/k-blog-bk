@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,15 +15,19 @@ import environmentValidation from './config/environment.validation';
 // Database
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { PostsModule } from './posts/posts.module';
-import { PostTypesModule } from './post-types/post-types.module';
-import { PicturesModule } from './pictures/pictures.module';
-import { CategoriesModule } from './categories/categories.module';
-import { TagsModule } from './tags/tags.module';
-import { AuthModule } from './auth/auth.module';
 import cloudinaryConfig from './config/cloudinary.config';
 import jwtConfig from './auth/config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
+
+import { TagsModule } from './tags/tags.module';
+import { PostsModule } from './posts/posts.module';
+import { AuthModule } from './auth/auth.module';
+import { PostTypesModule } from './post-types/post-types.module';
+import { CategoriesModule } from './categories/categories.module';
+import { PicturesModule } from './pictures/pictures.module';
+
+import { AuthenticationGuard } from './auth/guards/authentication.guards';
+import { AccessTokenGuard } from './auth/guards/access-token.guard';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -60,6 +65,13 @@ const ENV = process.env.NODE_ENV;
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    AccessTokenGuard,
+    {
+      provide: APP_GUARD,
+      useClass: AuthenticationGuard,
+    },
+  ],
 })
 export class AppModule {}
