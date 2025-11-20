@@ -28,6 +28,7 @@ import { PicturesModule } from './pictures/pictures.module';
 
 import { AuthenticationGuard } from './auth/guards/authentication.guards';
 import { AccessTokenGuard } from './auth/guards/access-token.guard';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -63,6 +64,7 @@ const ENV = process.env.NODE_ENV;
     CategoriesModule,
     TagsModule,
     AuthModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [

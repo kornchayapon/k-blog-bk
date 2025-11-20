@@ -1,9 +1,23 @@
+// Get all posts
+{{
+  //pre request script
+  const date = new Date();
+  exports.startDate = date.toString();
+  exports.endDate = date.toString();
+}}
+GET http://localhost:3000/posts/
+  ?startDate={{startDate}}
+  &endDate={{endDate}}
+  &limit=2
+  &page=1
+
 POST http://localhost:3000/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJpYXQiOjE3NjM2MTUyOTUsImV4cCI6MTc2MzYxODg5NSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.I79eCNXz9A1Nhqo9fSuf-X5YmFHbHamPFlOnkyH7DpU
 
 {
-  "title": "What's new with NestJS 11 - 1",  
-  "slug": "nest-js-1",
+  "title": "What's new with NestJS 11 - 3",  
+  "slug": "nest-js-3",
   "postType": 3,
   "category": 1,
   "content": "Hello nestjs post",
@@ -12,11 +26,8 @@ Content-Type: application/json
   "thumbnail": 10,
   "pictures": [11, 12],
   "tags": [1, 3],
-  "author": 1
+  "author": 3
 }
-
-// Get all posts
-GET http://localhost:3000/posts
 
 // Get post by id
 GET http://localhost:3000/posts/1
