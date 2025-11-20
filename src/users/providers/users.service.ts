@@ -10,22 +10,21 @@ import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { CreateUserProvider } from './create-user.provider';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    // Inject Provider
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   // Create User
   public async create(createUserDto: CreateUserDto) {
-    let user = await this.findOneByEmail(createUserDto.email);
-    if (user) {
-      throw new BadRequestException('Email already in use !!!');
-    }
-    user = this.usersRepository.create(createUserDto);
-    return await this.usersRepository.save(user);
+    return await this.createUserProvider.createUser(createUserDto);
   }
 
   // Find all users

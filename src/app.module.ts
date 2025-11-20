@@ -19,7 +19,10 @@ import { PostTypesModule } from './post-types/post-types.module';
 import { PicturesModule } from './pictures/pictures.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TagsModule } from './tags/tags.module';
+import { AuthModule } from './auth/auth.module';
 import cloudinaryConfig from './config/cloudinary.config';
+import jwtConfig from './auth/config/jwt.config';
+import { JwtModule } from '@nestjs/jwt';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -32,6 +35,8 @@ const ENV = process.env.NODE_ENV;
       load: [appConfig, databaseConfig, cloudinaryConfig],
       validationSchema: environmentValidation,
     }),
+    ConfigModule.forFeature(jwtConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider()),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -52,6 +57,7 @@ const ENV = process.env.NODE_ENV;
     PicturesModule,
     CategoriesModule,
     TagsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
