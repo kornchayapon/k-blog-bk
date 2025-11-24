@@ -35,20 +35,11 @@ export class GenerateTokensProvider {
   }
 
   public async generateAccessToken(user: User) {
-    const accessToken = await this.signToken<Partial<ActiveUserData>>(
+    return await this.signToken<Partial<ActiveUserData>>(
       user.id,
       this.jwtConfiguration.accessTokenTtl,
       { email: user.email, role: user.role as UserRole },
     );
-
-    return {
-      accessToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-    };
   }
 
   public async generateAllTokens(user: User) {
