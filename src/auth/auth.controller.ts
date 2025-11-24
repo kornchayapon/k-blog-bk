@@ -44,7 +44,10 @@ export class AuthController {
   @Post('refresh-tokens')
   @HttpCode(HttpStatus.OK)
   @Auth(AuthType.None)
-  public refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
-    return this.authService.refreshTokens(refreshTokenDto);
+  public async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+    const { accessToken, user } =
+      await this.authService.refreshTokens(refreshTokenDto);
+
+    return { access_token: accessToken, user };
   }
 }

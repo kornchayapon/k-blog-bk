@@ -49,6 +49,6 @@ export class SignInProvider {
     }
 
     // Generate access token
-    return await this.generateTokensProvider.generateTokens(user);
+    return await this.generateTokensProvider.generateAllTokens(user);
   }
 }

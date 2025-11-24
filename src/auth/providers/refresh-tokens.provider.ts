@@ -51,7 +51,7 @@ export class RefreshTokensProvider {
       }
 
       // Generate the tokens
-      return await this.generateTokensProvider.generateTokens(user);
+      return await this.generateTokensProvider.generateAccessToken(user);
     } catch (error) {
       throw new UnauthorizedException(error);
     }
