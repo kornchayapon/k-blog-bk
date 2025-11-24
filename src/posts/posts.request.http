@@ -13,11 +13,11 @@ GET http://localhost:3000/posts/
 
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJpYXQiOjE3NjM2MTUyOTUsImV4cCI6MTc2MzYxODg5NSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.I79eCNXz9A1Nhqo9fSuf-X5YmFHbHamPFlOnkyH7DpU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NjM5NTIxNjEsImV4cCI6MTc2Mzk1NTc2MSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.Q_RNxD4noROcAs8SGEtRwvzUL7klg7AF2Q3vkcTNx2k
 
 {
-  "title": "What's new with NestJS 11 - 4",  
-  "slug": "nest-js-4",
+  "title": "What's new with NestJS - 6",  
+  "slug": "nest-js-6",
   "postType": 3,
   "category": 1,
   "content": "Hello nestjs post",

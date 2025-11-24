@@ -10,6 +10,7 @@ import { Request } from 'express';
 import type { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
 import { REQUEST_USER_KEY } from '../constants/auth.constants';
+import { ActiveUserData } from '../interfaces/active-user-data.interface';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -36,12 +37,12 @@ export class AccessTokenGuard implements CanActivate {
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const payload = await this.jwtService.verifyAsync(
+      const payload: ActiveUserData = await this.jwtService.verifyAsync(
         token,
         this.jwtConfiguration,
       );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       request[REQUEST_USER_KEY] = payload;
     } catch (error) {
       console.log(error);
