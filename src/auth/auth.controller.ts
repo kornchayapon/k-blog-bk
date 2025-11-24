@@ -45,9 +45,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Auth(AuthType.None)
   public async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
-    const { accessToken, user } =
+    const accessToken =
       await this.authService.refreshTokens(refreshTokenDto);
 
-    return { access_token: accessToken, user };
+    return { access_token: accessToken };
   }
 }
