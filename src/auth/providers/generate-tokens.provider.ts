@@ -6,6 +6,7 @@ import jwtConfig from '../config/jwt.config';
 
 import { ActiveUserData } from '../interfaces/active-user-data.interface';
 import { User } from '@/users/user.entity';
+import { UserRole } from '../enums/user.role.enum';
 
 @Injectable()
 export class GenerateTokensProvider {
@@ -38,7 +39,7 @@ export class GenerateTokensProvider {
       this.signToken<Partial<ActiveUserData>>(
         user.id,
         this.jwtConfiguration.accessTokenTtl,
-        { email: user.email },
+        { email: user.email, role: user.role as UserRole },
       ),
       this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl),
     ]);
