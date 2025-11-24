@@ -6,3 +6,10 @@ Content-Type: application/json
   "email": "korn@chayapon.com",
   "password": "password123#"
 }
+
+POST http://localhost:3000/auth/refresh-tokens
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTc2Mzk1NDU3OSwiZXhwIjoxNzY0MDQwOTc5LCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.EAKgriDCGI84UC_0742PfFYH5Nk_cXPYjevhPYZqhe8"
+}
