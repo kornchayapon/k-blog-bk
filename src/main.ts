@@ -1,10 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
+import cookieParser from 'cookie-parser';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,7 +22,10 @@ async function bootstrap() {
   );
 
   // Enable CORS
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3001', // URL ของ Next.js
+    credentials: true, // for send and receive cookies
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }

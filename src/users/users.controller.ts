@@ -24,6 +24,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Auth(AuthType.None)
   public async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);
   }

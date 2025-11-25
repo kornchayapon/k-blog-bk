@@ -7,9 +7,8 @@ Content-Type: application/json
   "password": "password123#"
 }
 
-POST http://localhost:3000/auth/refresh-tokens
+POST http://localhost:3000/auth/refresh
 Content-Type: application/json
 
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTc2Mzk1NDU3OSwiZXhwIjoxNzY0MDQwOTc5LCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.EAKgriDCGI84UC_0742PfFYH5Nk_cXPYjevhPYZqhe8"
-}
+POST http://localhost:3000/auth/logout
+Content-Type: application/json
