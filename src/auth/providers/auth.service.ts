@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { SignInDto } from '../dtos/signin.dto';
 import { SignInProvider } from './sign-in.provider';
-import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { RefreshTokensProvider } from './refresh-tokens.provider';
+import { RefreshToken } from '../refresh-token.entity';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +13,12 @@ export class AuthService {
     // Inject Provider
     private readonly signInProvider: SignInProvider,
 
+    // Inject refresh token provider
     private readonly refreshTokensProvider: RefreshTokensProvider,
+
+    // Inject refresh token
+    @InjectRepository(RefreshToken)
+    private refreshTokenRepository: Repository<RefreshToken>,
   ) {}
 
   public async signIn(signInDto: SignInDto) {
@@ -21,7 +29,23 @@ export class AuthService {
     return true;
   }
 
-  public async refreshTokens(refreshTokenDto: RefreshTokenDto) {
-    return await this.refreshTokensProvider.refreshTokens(refreshTokenDto);
+  public async refreshTokens(oldRefreshToken: string) {
+    return await this.refreshTokensProvider.refreshTokens(oldRefreshToken);
+  }
+
+  public async logout(refreshToken: string) {
+    try {
+      await this.refreshTokenRepository.update(
+        {
+          token: refreshToken,
+        },
+        { isRevoked: true },
+      );
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException('User not found of invalid token');
+    }
+
+    return { message: 'Logout successful' };
   }
 }

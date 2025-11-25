@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Post } from '@/posts/post.entity';
+import { RefreshToken } from '@/auth/refresh-token.entity';
 
 @Entity()
 export class User {
@@ -97,4 +98,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
+  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
+  refreshTokens: RefreshToken[];
 }

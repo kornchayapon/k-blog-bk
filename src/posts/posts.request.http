@@ -13,18 +13,18 @@ GET http://localhost:3000/posts/
 
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NjM5NTIxNjEsImV4cCI6MTc2Mzk1NTc2MSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.Q_RNxD4noROcAs8SGEtRwvzUL7klg7AF2Q3vkcTNx2k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NjM5ODE5NjYsImV4cCI6MTc2Mzk4NTU2NiwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.1u5uaAlbOA09DJdsWdZ-cXA1aPgNGwTqBNSAQ5PVrN0
 
 {
-  "title": "What's new with NestJS - 6",  
-  "slug": "nest-js-6",
+  "title": "What's new with NestJS - 1",  
+  "slug": "nest-js-1",
   "postType": 3,
   "category": 1,
   "content": "Hello nestjs post",
   "postStatus": "draft",
   "publishedOn": "2025-11-07T11:12:06.642Z",
-  "thumbnail": 10,
-  "pictures": [11, 12],
+  // "thumbnail": 10,
+  // "pictures": [11, 12],
   "tags": [1, 3]
   // "author": 1
 }

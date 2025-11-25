@@ -14,6 +14,8 @@ import { UsersModule } from '@/users/users.module';
 import { HashingProvider } from './providers/hashing.provider';
 import { BcryptProvider } from './providers/bcrypt.provider';
 import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RefreshToken } from './refresh-token.entity';
 
 @Module({
   controllers: [AuthController],
@@ -28,6 +30,7 @@ import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
     forwardRef(() => UsersModule),
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
+    TypeOrmModule.forFeature([RefreshToken]),
   ],
   exports: [AuthService, HashingProvider],
 })

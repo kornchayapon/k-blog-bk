@@ -5,14 +5,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import jwtConfig from '../config/jwt.config';
 import type { ConfigType } from '@nestjs/config';
 
 import { UsersService } from '@/users/providers/users.service';
 import { GenerateTokensProvider } from './generate-tokens.provider';
-import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { ActiveUserData } from '../interfaces/active-user-data.interface';
+import { RefreshToken } from '../refresh-token.entity';
 
 @Injectable()
 export class RefreshTokensProvider {
@@ -30,30 +32,59 @@ export class RefreshTokensProvider {
 
     // Inject provider
     private readonly generateTokensProvider: GenerateTokensProvider,
+
+    // Inject refresh token
+    @InjectRepository(RefreshToken)
+    private refreshTokenRepository: Repository<RefreshToken>,
   ) {}
 
-  public async refreshTokens(refreshTokenDto: RefreshTokenDto) {
+  public async refreshTokens(oldRefreshToken: string) {
+    if (!oldRefreshToken) {
+      throw new UnauthorizedException('Refresh Token is required');
+    }
+
+    let activeUser: Pick<ActiveUserData, 'sub'>;
+
     // Verify the refreshToken using jwt service
     try {
-      const { sub } = await this.jwtService.verifyAsync<
+      activeUser = await this.jwtService.verifyAsync<
         Pick<ActiveUserData, 'sub'>
-      >(refreshTokenDto.refreshToken, {
+      >(oldRefreshToken, {
         secret: this.jwtConfiguration.secret,
         audience: this.jwtConfiguration.audience,
         issuer: this.jwtConfiguration.issuer,
       });
-
-      //Fetch the user from the database
-      const user = await this.usersService.findOneById(sub);
-
-      if (!user) {
-        throw new UnauthorizedException('User not found of invalid token');
-      }
-
-      // Generate the tokens
-      return await this.generateTokensProvider.generateAccessToken(user);
     } catch (error) {
-      throw new UnauthorizedException(error);
+      console.log(error);
+
+      throw new UnauthorizedException('Invalid or expired Refresh Token');
     }
+
+    // Check Token Revoked
+    const dbToken = await this.refreshTokenRepository.findOne({
+      where: { token: oldRefreshToken },
+    });
+
+    if (dbToken) {
+      if (dbToken.isRevoked || dbToken.expiresAt < new Date()) {
+        await this.refreshTokenRepository.remove(dbToken);
+        throw new UnauthorizedException(
+          'Refresh Token has been revoked or expired.',
+        );
+      }
+    }
+
+    // Fetch the user from the database
+    const user = await this.usersService.findOneById(activeUser.sub);
+
+    if (!user) {
+      throw new UnauthorizedException('User not found of invalid token');
+    }
+
+    // Generate the tokens
+    const accessToken =
+      await this.generateTokensProvider.generateAccessToken(user);
+
+    return { accessToken, user };
   }
 }

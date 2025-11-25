@@ -1,3 +1,4 @@
+import { Post } from '@/posts/post.entity';
 import { Expose } from 'class-transformer';
 
 export class UserDto {
