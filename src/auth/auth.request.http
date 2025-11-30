@@ -1,5 +1,6 @@
+// sign in
 # @showResponseHeaders
-POST http://localhost:3000/auth
+POST http://localhost:3002/auth/login
 Content-Type: application/json
 
 {
@@ -7,8 +8,14 @@ Content-Type: application/json
   "password": "password123#"
 }
 
-POST http://localhost:3000/auth/refresh
+// refresh
+POST http://localhost:3002/auth/refresh
 Content-Type: application/json
 
-POST http://localhost:3000/auth/logout
+// logout
+POST http://localhost:3002/auth/logout
 Content-Type: application/json
+
+// profile
+GET http://localhost:3002/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoia29ybkBjaGF5YXBvbi5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NjQ1MDAwOTYsImV4cCI6MTc2NDUwMzY5NiwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.jaMA0aKRprfhetY2xOuT54ONJBa0zhzIb6YAfNdpctA
