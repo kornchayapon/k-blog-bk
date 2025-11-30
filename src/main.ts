@@ -23,10 +23,10 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: 'http://localhost:3001', // URL ของ Next.js
+    origin: 'http://localhost:3000', // URL ของ Next.js
     credentials: true, // for send and receive cookies
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3002);
 }
 void bootstrap();

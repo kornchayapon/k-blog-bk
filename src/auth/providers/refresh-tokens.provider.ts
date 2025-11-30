@@ -81,10 +81,7 @@ export class RefreshTokensProvider {
       throw new UnauthorizedException('User not found of invalid token');
     }
 
-    // Generate the tokens
-    const accessToken =
-      await this.generateTokensProvider.generateAccessToken(user);
-
-    return { accessToken, user };
+    // return with generate token
+    return await this.generateTokensProvider.generateAccessToken(user);
   }
 }

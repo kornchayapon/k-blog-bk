@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  forwardRef,
+  Get,
   HttpCode,
   HttpStatus,
   Inject,
@@ -19,12 +21,9 @@ import { AuthType } from './enums/auth-type.enum';
 
 import jwtConfig from './config/jwt.config';
 import type { ConfigType } from '@nestjs/config';
-
-enum TokenType {
-  Access,
-  Refresh,
-  All,
-}
+import type { ActiveUserData } from './interfaces/active-user-data.interface';
+import { ActiveUser } from './decorators/active-user.decorator';
+import { UsersService } from '@/users/providers/users.service';
 
 @Controller('auth')
 export class AuthController {
@@ -35,37 +34,13 @@ export class AuthController {
     // Inject jwt configuration
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+
+    // Inject User service
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
   ) {}
 
-  // Set cookie helper function
-  private setTokenCookies(
-    res: Response,
-    accessToken: string,
-    refreshToken: string,
-    tokenType: TokenType,
-  ) {
-    if (tokenType == TokenType.Access || tokenType == TokenType.All) {
-      // set access token httpOnly = false, for read from nextjs
-      res.cookie('accessToken', accessToken, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: this.jwtConfiguration.accessTokenTtl,
-        path: '/',
-      });
-    }
-
-    if (tokenType == TokenType.Refresh || tokenType == TokenType.All) {
-      // set refresh token httpOnly = true for security
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: this.jwtConfiguration.refreshTokenTtl,
-        path: '/',
-      });
-    }
-  }
-
-  @Post()
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   @Auth(AuthType.None)
   public async signIn(
@@ -75,11 +50,14 @@ export class AuthController {
     const { accessToken, refreshToken, user } =
       await this.authService.signIn(signInDto);
 
-    this.setTokenCookies(res, accessToken, refreshToken, TokenType.All);
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: this.jwtConfiguration.refreshTokenTtl,
+      path: '/',
+    });
 
-    return process.env.NODE_ENV === 'production'
-      ? { user }
-      : { access_token: accessToken, refresh_token: refreshToken, user };
+    return { access_token: accessToken, user };
   }
 
   @Post('refresh')
@@ -90,28 +68,22 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const oldRefreshToken = req.cookies['refreshToken'];
+    const refreshToken = req.cookies['refresh_token'];
 
-    if (!oldRefreshToken) {
+    if (!refreshToken) {
       throw new UnauthorizedException('Refresh Token is missing or invalid.');
     }
 
     try {
-      const { accessToken, user } =
+      const { accessToken } =
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        await this.authService.refreshTokens(oldRefreshToken);
+        await this.authService.refreshTokens(refreshToken);
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      this.setTokenCookies(res, accessToken, oldRefreshToken, TokenType.Access);
-
-      return process.env.NODE_ENV === 'production'
-        ? { message: 'Tokens refreshed successfully' }
-        : // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          { access_token: accessToken, refresh_token: oldRefreshToken, user };
+      return { access_token: accessToken };
     } catch (error) {
       // refresh failed delete all cookies
-      res.clearCookie('accessToken');
-      res.clearCookie('refreshToken');
+      res.clearCookie('access_token');
+      res.clearCookie('refresh_token');
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       throw new UnauthorizedException(error.message);
@@ -121,18 +93,43 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @Auth(AuthType.None)
-  public async logout(
-    @Req() req: Request,
-    // @Res({ passthrough: true }) res: Response,
-  ) {
+  public async logout(@Req() req: Request) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const oldRefreshToken = req.cookies['refreshToken'];
+    const refreshToken = req.cookies['refresh_token'];
 
-    if (!oldRefreshToken) {
+    if (!refreshToken) {
       throw new UnauthorizedException('Refresh Token is missing or invalid.');
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return await this.authService.logout(oldRefreshToken);
+    return await this.authService.logout(refreshToken);
+  }
+
+  @Get('profile')
+  // @Auth(AuthType.None)
+  public async profile(@ActiveUser() user: ActiveUserData) {
+    if (!user) {
+      throw new UnauthorizedException('Invalid Tokens !!!');
+    }
+
+    const foundUser = await this.usersService.findOneById(user.sub);
+
+    if (!foundUser) {
+      throw new UnauthorizedException('User not found !!!');
+    }
+
+    return {
+      user: {
+        id: foundUser.id,
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        email: foundUser.email,
+        avatar: foundUser.avatar,
+        mobile: foundUser.mobile,
+        role: foundUser.role,
+        createdAt: foundUser.createdAt,
+        updatedAt: foundUser.updatedAt,
+      },
+    };
   }
 }

@@ -41,14 +41,29 @@ export class GenerateTokensProvider {
   }
 
   public async generateAccessToken(user: User) {
-    return await this.signToken<Partial<ActiveUserData>>(
+    const accessToken = await this.signToken<Partial<ActiveUserData>>(
       user.id,
       this.jwtConfiguration.accessTokenTtl,
       { email: user.email, role: user.role as UserRole },
     );
+
+    return {
+      accessToken,
+      user: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        avatar: user.avatar,
+        mobile: user.mobile,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    };
   }
 
-  public async generateAllTokens(user: User) {
+  public async generateTokens(user: User) {
     const [accessToken, refreshToken] = await Promise.all([
       this.signToken<Partial<ActiveUserData>>(
         user.id,
@@ -76,8 +91,14 @@ export class GenerateTokensProvider {
       refreshToken,
       user: {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        avatar: user.avatar,
+        mobile: user.mobile,
         role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     };
   }
